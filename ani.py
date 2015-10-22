@@ -22,7 +22,8 @@ i = 0
 #print all links title and add link itself to array
 for link in soup.find_all("a"):
     if str(link.get("title")).find("online in high quality") >= 0:
-        print ("(", i, ") ", link.get("title"))
+        short = str(link.get("title"))[12:len(str(link.get("title")))-23]
+        print ("(", i, ") ", short)
         linklist.append(link.get("href"))
         i += 1
 
