@@ -3,5 +3,7 @@ from anistream import stream
 
 
 scraper = cfscrape.create_scraper()
-stream(scraper)
+while True:
+    url = input("url :")
+    stream(scraper, url)
 
