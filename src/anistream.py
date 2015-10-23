@@ -2,11 +2,10 @@
 import os, webbrowser, requests, cfscrape, array, base64
 from bs4 import BeautifulSoup
 
-#get past cloudflare
-scraper = cfscrape.create_scraper()
-
-#function asks user for series url and episode number to watch episode
-def stream():
+#function input scraper from cfscrape
+#asks user for series url and episode number to watch episode
+#no output
+def stream(scraper):
     while True:
         #get url
         url = input("url :")
