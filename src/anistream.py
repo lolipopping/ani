@@ -53,5 +53,4 @@ def stream(scraper, url):
             os.system(launch)
     #exit out of innerloop
     except KeyboardInterrupt:
-        pass
         print("")
