@@ -1,4 +1,3 @@
-#! /usr/bin/env python3
 import os, webbrowser, requests, cfscrape, array, base64
 from bs4 import BeautifulSoup
 
