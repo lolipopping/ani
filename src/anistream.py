@@ -2,54 +2,50 @@ import os, webbrowser, requests, cfscrape, array, base64
 from bs4 import BeautifulSoup
 
 #function input scraper from cfscrape, series url
-#asks user episode number of series
+#asks user episode number launches mpv 
 #no output
 def stream(scraper, url):
 	try:
-		#pull from url
-		seriesurl = scraper.get(url)
+		series = scraper.get(url)
 	except:
 		print("url error")
 		return
-	soup = BeautifulSoup(seriesurl.content, "html5lib")
-	#prints all html
-	#print (soup.prettify())
-	#makes empty array
-	linklist = []
+	soup = BeautifulSoup(series.content, "html5lib")
+	#eplist stores the url for all episodes
+	eplist = []
+	#titlelist stores all the titles of the episodes
+	titlelist = []
 	i = 0
-	#print all links title and add link itself to array
+	#stores all episode url into eplist
+	#stores all titles into titlelist newest first
 	for link in soup.find_all("a"):
 		if str(link.get("title")).find("online in high quality") >= 0:
 			short = str(link.get("title"))[12:len(str(link.get("title")))-23]
-			print ("(", i, ") ", short)
-			linklist.append(link.get("href"))
+			tmp = "(" + str(i) + ") " + short
+			titlelist.append(tmp)
+			eplist.append(link.get("href"))
 			i += 1
 	try:
+		#keep asking for ep number and playing 
+		#^C exits ep loop into url loop
 		while True:
-			#get episode number
+			for title in titlelist:
+				print (title)
 			ep = input("ep :")
 			try:
-				#download episode page
-				epurl = scraper.get("https://kissanime.com" + str(linklist[int(ep)]))
+				epurl = scraper.get("https://kissanime.com" + str(eplist[int(ep)]))
 			except:
 				print("ep number error")
 				return
 			soup = BeautifulSoup(epurl.content, "html5lib")
-			#array to hold videos
+			#array to hold videos url
 			video = []
-			#get base64 code episodes inside selectQuality and store into array
+			#video contains video url from 0 with best quality to n with worst quality
 			for link in soup.find(id="selectQuality").find_all("option"):
 				video.append((link.get("value")))
-			#select quality
-			#q = input("quality :")
-			#watch highest quality video
-			#decode base 64
 			play = base64.b64decode(str(video[0]))
-			#encode to utf8
 			play = play.decode('utf8')
-			#need quotes to play videos with & in name
 			launch = "mpv " + "\"" + play + "\""
 			os.system(launch)
-	#exit out of innerloop
 	except KeyboardInterrupt:
 		print("")
