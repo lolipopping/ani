@@ -22,7 +22,7 @@ def stream(scraper, url):
 		if str(link.get("title")).find("online in high quality") >= 0:
 			short = str(link.get("title"))[12:len(str(link.get("title")))-23]
 			tmp = "(" + str(i) + ") " + short
-			titlelist.append(tmp)
+			titlelist.insert(0, tmp)
 			eplist.append(link.get("href"))
 			i += 1
 	try:
